@@ -132,5 +132,12 @@ class GestionClientes(private val s: Socket, private val db: DB) {
             // Lo enviamos
             salida.writeStringUtf8(json.encodeToString(response) + "\n")
         }
+        sendResponse.join()
+
+        log.debug { "Cerrando conexion" }
+        withContext(Dispatchers.IO) {
+            salida.close()
+            s.close()
+        }
     }
 }
